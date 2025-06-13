@@ -1,0 +1,28 @@
+#Variables globales
+
+ndim = None
+nn = None
+nels = None
+neq = 0
+nf = None
+nband = 0
+inf_nodos = None
+inf_elementos = None
+elementos = None
+km_locales = None
+kv = None
+num = None
+g_g = None
+props = None
+loads = None
+inv_mat = None
+loads_reducido = None
+mat_def_u = None
+gdl_completos = None
+u_completa = None
+kg = None
+esfuerzo = None
+deform_unit = None
+axiales = None
+u_locales = None
+longitudes = None
