@@ -8,55 +8,25 @@ def leer_datos_desde_excel(ruta="datos/datos.xlsx"):
 
     # Leer cada hoja del archivo Excel
     elementos = pd.read_excel(ruta, sheet_name="Elementos")
-    print("\n📄 Elementos:")
-    print(elementos)
 
     nodos = pd.read_excel(ruta, sheet_name="Nodos Coord")
-    print("\n📄 Nodos Coord:")
-    print(nodos)
 
     datos = pd.read_excel(ruta, sheet_name="Datos")
-    print("\n📄 Datos:")
-    print(datos)
 
     loads = pd.read_excel(ruta, sheet_name="Nodos Loads")
-    print("\n📄 Nodos Loads:")
-    print(loads)
 
     props = pd.read_excel(ruta, sheet_name="Props")
-    print("\n📄 Props:")
-    print(props)
 
     restricciones = pd.read_excel(ruta, sheet_name="Restricciones")
-    print("\n📄 Restricciones:")
-    print(restricciones)
 
     # Guardar en variables globales
 
     gd.ndim = int(datos.values[0][0])
-    #print("Dimension")
-    #print(gd.ndim)
     gd.coord_nodos = nodos.values.tolist()
-    #print("Coord nodos:")
-    #print(gd.coord_nodos)
     gd.conexion_elementos = elementos.values.tolist()
-    #print("Conex elementos:")
-    #print(gd.conexion_elementos)
     gd.props = props.values.tolist()
-    
-    #print("Inf propiedades")
-    #print(gd.props)
-
     gd.restricciones = restricciones.values.tolist()
-    print("Restricciones:")
-    print(restricciones)
-
     gd.nn = len(nodos)
-    #print("Nn")
-    #print(gd.nn)
     gd.nels = len(elementos)
-    #print("nels")
-    #print(gd.nels)
     gd.nf = np.zeros((gd.nn, gd.ndim))
-    #print("Nf")
-    #print(gd.nf)
+    gd.loads = loads
