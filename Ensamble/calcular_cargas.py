@@ -2,39 +2,35 @@ import numpy as np
 import discretizacion.datosGenerales as gd
 
 def calcular_loads():
-    dim = gd.ndim        # 1, 2 o 3
-    nn = gd.nn           # número total de nodos
+    dim = int(gd.ndim)   # 1, 2 o 3
+    nn  = int(gd.nn)
 
-    # DataFrame con columnas [NODO, carga1, carga2, ... carga_dim]
-    loads_df = gd.loads
+    # 1) Vector global de cargas (nn x dim)
+    cargas_full = np.zeros((nn, dim))
+    for fila in gd.loads.values:
+        idx = int(fila[0]) - 1          # nodo 1→índice 0
+        cargas_full[idx, :] = fila[1:1+dim]
 
-    # 1) Inicializa todo en cero
-    cargas = np.zeros((nn, dim), float)
+    loads_col = cargas_full.flatten()[:, np.newaxis]
+    gd.loads = loads_col
 
-    # 2) Índices (0-based) y valores de carga extraídos de loads_df
-    nodos   = loads_df['NODO'].astype(int).to_numpy() - 1
-    valores = loads_df.iloc[:, 1:1+dim].to_numpy().astype(float)
+    # 2) Aplanar nf y usarlo como máscara
+    nf_flat = np.array(gd.nf, dtype=int).flatten()
+    # nf_flat[i] == 0 → DOF restringido; !=0 → DOF libre
 
-    # 3) Asigna en bloque
-    cargas[nodos, :] = valores
+    # 3) Índices de DOF libres
+    gdl_libres = [i for i, v in enumerate(nf_flat) if v != 0]
 
-    # 4) Vector global
-    gd.loads = cargas.flatten()[:, None]
+    # 4) Para gdl_completos, usamos directamente los valores de nf_flat
+    #    (0 para restringidos, >0 para libres)
+    gdl_completos = list(nf_flat)
 
-    # 5) GDL completos y libres (igual que antes)
-    gdl_completos = [
-        (i*dim + j) if gd.coord_nodos[i][j] == 1 else 0
-        for i in range(nn)
-        for j in range(dim)
-    ]
-    gd.gdl_completos = gdl_completos
-    gd.gdl_libres = [g for g in gdl_completos if g != 0]
+    # 5) Vector reducido
+    loads_reducido = loads_col[gdl_libres]
 
-    # 6) Vector reducido: sólo las cargas que vienen en el Excel
-    gd.loads_reducido = valores.flatten()[:, None]
+    # 6) Guardar y mostrar
+    gd.gdl_completos  = gdl_completos
+    gd.loads_reducido = loads_reducido
 
-    # --- Salida de comprobación ---
-    print("\nVector global de cargas (completo):")
-    print(gd.loads)
-    print("\nVector de cargas reducido (sólo nodos cargados):")
+    print("Cargas reducidas:")
     print(gd.loads_reducido)

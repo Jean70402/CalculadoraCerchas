@@ -27,3 +27,4 @@ axiales = None
 u_locales = None
 longitudes = None
 restricciones=None
+mat_fuerzas=None
