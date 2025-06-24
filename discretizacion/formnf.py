@@ -1,5 +1,3 @@
-import numpy as np
-
 import discretizacion.datosGenerales as gd  # Usamos gd
 
 
