@@ -12,6 +12,7 @@ from resolucion.banred import subrutina_banred
 
 
 def main():
+
     leer_datos_desde_excel()
     subrutina_form_nf()
     subrutina_num_to_g_g()
@@ -23,5 +24,6 @@ def main():
     calcular_axiales()
     obtenerReacciones()
     def_unit_y_esfuerzo()
+
 if __name__ == "__main__":
     main()

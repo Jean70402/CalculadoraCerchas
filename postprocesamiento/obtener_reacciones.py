@@ -1,40 +1,66 @@
 import numpy as np
+from numpy import zeros
+
 import discretizacion.datosGenerales as gd
 from extras.impresion_extra import print_seccion, print_nodos_formato
 
+def form_kv_global():
 
-def form_global():
-    total_dof = gd.nn * gd.ndim
-    K = np.zeros((total_dof, total_dof))
+    n = len(gd.u_completa)
+    bw = len(gd.u_completa)
+    rows = bw + 1
+    kv = zeros(rows * n)
 
     for idx in range(len(gd.km_locales)):
-        # en lugar de inf_elementos, tomo la conexión de num
-        ni, nj = gd.num[idx]              # ej: [2, 4]
-        ni = int(ni)
-        nj = int(nj)
-
-        # armo la lista de DOFs físicos
-        phys = (
-                [ni * gd.ndim + d for d in range(gd.ndim)] +
-                [nj * gd.ndim + d for d in range(gd.ndim)]
+        # nodos de elemento
+        ni, nj = gd.num[idx]
+        ni, nj = int(ni), int(nj)
+        # vector de DOFs globales (1-based)
+        g = (
+                [ni * gd.ndim + d + 1 for d in range(gd.ndim)] +
+                [nj * gd.ndim + d + 1 for d in range(gd.ndim)]
         )
+        km = gd.km_locales[idx]
 
-        km = gd.km_locales[idx]           # 2*ndim × 2*ndim
+        for i in range(2 * gd.ndim):
+            for j in range(2 * gd.ndim):
+                val_local = km[i][j]
+                # desplazamiento en columnas +1
+                icd = g[j] - g[i] + 1
+                if (icd - 1) >= 0 and (icd - 1) < rows:
+                    ival = int(n * (icd - 1) + g[i])
+                    kv[ival - 1] += val_local
 
-        # ensamblado incondicional
-        for a in range(2 * gd.ndim):
-            for b in range(2 * gd.ndim):
-                K[phys[a], phys[b]] += km[a][b]
-
-    gd.kg = K
-    print(gd.kg)
+    gd.kv_global = kv
+    #print(kv)
+    return kv
 
 def obtenerReacciones():
-    form_global()
 
-    reacciones = (gd.kg @ gd.u_completa) - gd.loads
+    # 1) Matriz en banda
+    kv = form_kv_global()
+    n = len(gd.u_completa)
+    bw = len(gd.u_completa)
+    rows = bw + 1
 
-    # Redondear a 2 decimales y eliminar residuos numéricos cercanos a cero
+    # 2) Multiplicación Kv × u
+    u = gd.u_completa
+    y = np.zeros_like(u)
+
+    for i in range(n):
+        for k in range(rows):
+            j = i + k
+            if j >= n:
+                continue
+            kij = kv[k * n + i]
+            y[i] += kij * u[j]
+            if i != j:
+                y[j] += kij * u[i]
+
+    # 3) Reacciones: kv * u - loads
+    reacciones = y - gd.loads
     reacciones = np.where(np.abs(reacciones) < 1e-12, 0, np.round(reacciones, 5))
+
+    # 4) Imprimir reacciones
     print_seccion("Las reacciones son (kN):")
     print_nodos_formato(reacciones, gd.ndim)

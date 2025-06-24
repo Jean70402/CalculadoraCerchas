@@ -23,7 +23,7 @@ def subrutina_banred():
     x = backward_substitution_band(L, bw_eff, y)
     gd.mat_def_u = x.reshape(-1, 1)
     result_cm = np.round(gd.mat_def_u * 100, 5)
-    print("Deformaciones (cm): \n", result_cm)
+    #print("Deformaciones (cm): \n", result_cm)
 
 def cholesky_band(band, bw):
     n = band.shape[1]
