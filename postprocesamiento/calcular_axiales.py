@@ -3,11 +3,10 @@ import math
 import numpy as np
 
 import discretizacion.datosGenerales as gd  # Usamos gd
-from discretizacion.insertEA import insertarEa, insertarA
-from extras.impresion_extra import print_seccion, print_nodos_formato, print_elementos_formato_linea, \
-    print_def_unit
+from discretizacion.insertEA import insertarEa
+from extras.impresion_extra import print_seccion, print_elementos_formato_linea
 
-
+#Cálculo de los axiales segun subrutinas definidas, se asemeja a pin_jointed
 
 def calcular_axiales():
     # define una lista de matriz vacia para elementos y para los km generados:

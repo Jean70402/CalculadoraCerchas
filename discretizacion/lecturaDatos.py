@@ -20,12 +20,14 @@ def leer_datos_desde_excel(ruta="datos/datos.xlsx"):
     restricciones = pd.read_excel(ruta, sheet_name="Restricciones")
 
     # Guardar en variables globales
-
+    #Se define gd como global data, son las variables para usarse a lo largo del programa
+    #Se guardan cada una accediendo a su valor (.values) y se elige la fila y columna de los datos
     gd.ndim = int(datos.values[0][0])
     gd.coord_nodos = nodos.values.tolist()
     gd.conexion_elementos = elementos.values.tolist()
     gd.props = props.values.tolist()
     gd.restricciones = restricciones.values.tolist()
+    #Len es la propiedad para llamar longitudes, devuelve enteros.
     gd.nn = len(nodos)
     gd.nels = len(elementos)
     gd.nf = np.zeros((gd.nn, gd.ndim))

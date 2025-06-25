@@ -5,7 +5,8 @@ import numpy as np
 import discretizacion.datosGenerales as gd  # Usamos gd
 from extras.impresion_extra import print_seccion, print_nodos_formato
 
-
+#Función para encontrar la matriz de deformación completa, añadiendo
+#ceros en los gdl.
 def obtener_mat_def_completa():
     u = gd.mat_def_u  # vector columna con las deformaciones activas
     u_completa = []

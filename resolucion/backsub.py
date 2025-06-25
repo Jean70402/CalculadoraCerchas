@@ -1,6 +1,8 @@
 import numpy as np
 
-
+#Definiciones de backsubstitution y forward substitution para
+#resolver el sistema de matrices, definido en banred
+#segun cholesky
 def backward_substitution_band(L, bw, y):
     n = len(y)
     x = np.zeros_like(y)

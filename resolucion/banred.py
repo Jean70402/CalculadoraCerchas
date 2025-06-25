@@ -25,6 +25,26 @@ def subrutina_banred():
     result_cm = np.round(gd.mat_def_u * 100, 5)
     #print("Deformaciones (cm): \n", result_cm)
 
+
+'''
+Se utiliza la teoría de cholesky para resolver matrices en formato de banda
+simétricas positivas, se busca una matriz L tal que:
+L*L^T=A
+siendo A la matriz bandeada simétrica
+
+Forward substitution
+Encuentra un "y" tal que L*y=b
+donde b es la matriz que se quiere multiplicar para obtener el resultado
+entonces b es la matriz de fuerzas reducidas
+
+Backward substitution
+Se resuelve el sistema de multiplicación con la inversa
+se busca un x tal que L^T*x=y
+
+con el "y" identificado de forward y la L^T del primer paso de hallar L
+Se resuelve el sistema y da de resultado la deformación
+
+'''
 def cholesky_band(band, bw):
     n = band.shape[1]
     L = np.zeros_like(band)

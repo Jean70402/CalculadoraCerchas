@@ -3,7 +3,8 @@ from numpy import zeros
 
 import discretizacion.datosGenerales as gd
 from extras.impresion_extra import print_seccion, print_nodos_formato
-
+#Armado de kv global, para obtener la matriz kv global
+#se asemeja la lógica a formkv, pero tomando en cuenta todos los DOF
 def form_kv_global():
 
     n = len(gd.u_completa)
@@ -35,6 +36,8 @@ def form_kv_global():
     #print(kv)
     return kv
 
+#Multiplicación de la matriz en formato de banda con elementos
+#Es más sencillo ya que no requiere la transpuesta
 def obtenerReacciones():
 
     # 1) Matriz en banda
