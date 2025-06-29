@@ -198,7 +198,7 @@ def rigid_jointed():
             km_local[10,2]= -a5
 
             # --- ahora la transformación con gamma y r0 ---
-            gamrad = gd.gamma[fila[0]] * math.pi/180
+            gamrad = gd.restricciones[fila[0] - 1][6] * math.pi/180
             cg = math.cos(gamrad); sg = math.sin(gamrad)
             den = ell * math.sqrt(x1*x1 + z1*z1)
             r0 = np.zeros((3,3))
