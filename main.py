@@ -12,10 +12,11 @@ from resolucion.banred import subrutina_banred
 
 
 def main():
-
+    Cercha_O_Portico=input()
     leer_datos_desde_excel()
     subrutina_form_nf()
     subrutina_num_to_g_g()
+
     pin_jointed()
     form_kv()
     calcular_loads()

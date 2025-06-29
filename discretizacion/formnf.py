@@ -11,7 +11,7 @@ def subrutina_form_nf():
             # Busca en las restricciones si hay coincidencia
             for r in gd.restricciones:
                 nodo = int(r[0])
-                if nodo == i + 1 and int(r[j + 1]) == 1:
+                if nodo == i + 1 and int(r[j + 1]) == 0:
                     es_restringido = True
                     break  # ya no es necesario seguir buscando
 
