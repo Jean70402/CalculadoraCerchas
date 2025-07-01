@@ -22,9 +22,7 @@ def insertarEiZ(prop):
     return eiz
 
 def insertarG(prop):
-    e = gd.props[prop - 1][1]
-    poisson = gd.props[prop - 1][5]
-    G = e/(2*(1+poisson))
+    G = gd.props[prop - 1][6]
     return G
 
 def insertarA(prop):
