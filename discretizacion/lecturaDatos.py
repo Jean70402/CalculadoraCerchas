@@ -25,10 +25,13 @@ def leer_datos_desde_excel(ruta="datos/datos.xlsx"):
     gd.ndim = int(datos.values[0][0])
     gd.coord_nodos = nodos.values.tolist()
     gd.conexion_elementos = elementos.values.tolist()
+    for j in range(2):
+        for i in range (len(gd.conexion_elementos)):
+            gd.conexion_elementos[i][j + 1]-=1
     gd.props = props.values.tolist()
     gd.restricciones = restricciones.values.tolist()
     #Len es la propiedad para llamar longitudes, devuelve enteros.
     gd.nn = len(nodos)
     gd.nels = len(elementos)
-    gd.nf = np.zeros((gd.nn, gd.ndim))
+    gd.nf = np.zeros((gd.nn, 6))
     gd.loads = loads

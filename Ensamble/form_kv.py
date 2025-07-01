@@ -14,11 +14,11 @@ def form_kv():
     for contador1 in range(len(gd.g_g)):
         g = gd.g_g[contador1, :]
         #Recorre una vez para el valor de i
-        for i in range(2 * gd.ndim):
+        for i in range(2 * gd.restri):
             #El valor no está restringido
             if g[i] != 0:
                 #Recorre segunda vez
-                for j in range(2 * gd.ndim):
+                for j in range(2 * gd.restri):
                     #El valor no es 0
                     if g[j] != 0:
                         #Recupera el valor de km segun g

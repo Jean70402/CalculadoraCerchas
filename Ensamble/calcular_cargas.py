@@ -2,7 +2,7 @@ import numpy as np
 import discretizacion.datosGenerales as gd
 
 def calcular_loads():
-    dim = int(gd.ndim)   # 1, 2 o 3
+    dim = int(gd.restri)   # 1, 2 o 3
     nn  = int(gd.nn)
 
     # Vector global de cargas (nn x dim)

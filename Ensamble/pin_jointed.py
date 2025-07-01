@@ -110,4 +110,4 @@ def pin_jointed():
     # Ubicación de variables en memoria global:
     gd.elementos = np.array(elementos)
     gd.km_locales = km_g
-    #print(gd.km_locales[15])
+    #print(gd.km_locales[0])
