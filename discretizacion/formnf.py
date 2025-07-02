@@ -3,14 +3,14 @@ import discretizacion.datosGenerales as gd  # Usamos gd
 
 def subrutina_form_nf():
     gd.neq = 0
-    gd.restri = len(gd.restricciones[0])-1
+    gd.restri = len(gd.restricciones[0]) - 1
     columnas_a_borrar = []
-    if gd.ndim == 1 and gd.cer_por==1:
+    if gd.ndim == 1 and gd.cer_por == 1:
         columnas_a_borrar = [1, 3, 4, 5]
-    elif gd.ndim == 2 and gd.cer_por==1:
+    elif gd.ndim == 2 and gd.cer_por == 1:
         columnas_a_borrar = [3, 4, 5]
 
-    if gd.cer_por==0:
+    if gd.cer_por == 0:
         columnas_a_borrar = [4, 5, 6]
         if gd.ndim == 1:
             columnas_a_borrar += [2, 3]
@@ -18,9 +18,8 @@ def subrutina_form_nf():
             columnas_a_borrar += [3]
 
     for fila in gd.restricciones:
-        for i in sorted(columnas_a_borrar, reverse = True):
+        for i in sorted(columnas_a_borrar, reverse=True):
             del fila[i]
-
 
     for i in range(gd.nn):  # Recorre cada nodo
         for j in range(gd.restri):  # Recorre x, y, z según ndim
