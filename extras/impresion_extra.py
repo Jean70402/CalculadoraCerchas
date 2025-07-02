@@ -39,7 +39,7 @@ def print_def_y_giro_extendido(matriz, dof=6):
         print(linea1)
         print(linea2)
     print()
-def print_def_y_giro_extendido(matriz, dof=6):
+def print_def_y_giro_reaccion(matriz, dof=6):
 
     etiquetas_disp = ['Rx', 'Ry', 'Rz']
     etiquetas_rot  = ['Mx', 'My', 'Mz']

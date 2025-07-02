@@ -2,7 +2,8 @@ import numpy as np
 from numpy import zeros
 
 import discretizacion.datosGenerales as gd
-from extras.impresion_extra import print_seccion, print_nodos_formato, print_def_y_giro_extendido
+from extras.impresion_extra import print_seccion, print_nodos_formato, print_def_y_giro_extendido, \
+    print_def_y_giro_reaccion
 
 
 #Armado de kv global, para obtener la matriz kv global
@@ -68,4 +69,4 @@ def obtenerReacciones():
 
     # 4) Imprimir reacciones
     print_seccion("Las reacciones son (kN):")
-    print_def_y_giro_extendido(reacciones, gd.restri)
+    print_def_y_giro_reaccion(reacciones, gd.restri)
