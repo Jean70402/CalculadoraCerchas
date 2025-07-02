@@ -2,7 +2,9 @@ import numpy as np
 from numpy import zeros
 
 import discretizacion.datosGenerales as gd
-from extras.impresion_extra import print_seccion, print_nodos_formato
+from extras.impresion_extra import print_seccion, print_nodos_formato, print_def_y_giro_extendido
+
+
 #Armado de kv global, para obtener la matriz kv global
 #se asemeja la lógica a formkv, pero tomando en cuenta todos los DOF
 def form_kv_global():
@@ -66,4 +68,4 @@ def obtenerReacciones():
 
     # 4) Imprimir reacciones
     print_seccion("Las reacciones son (kN):")
-    print_nodos_formato(reacciones, gd.ndim)
+    print_def_y_giro_extendido(reacciones, gd.restri)
