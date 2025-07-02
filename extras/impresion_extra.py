@@ -18,6 +18,30 @@ def print_nodos_formato(matriz, ndim):
         print(linea)
     print()
 
+def print_def_y_giro_extendido(matriz, dof=6):
+
+    etiquetas_disp = ['dx', 'dy', 'dz']
+    etiquetas_rot  = ['θx', 'θy', 'θz']
+    valores = matriz.flatten()
+
+    n_nodos = len(valores) // dof
+    for n in range(n_nodos):
+        base = n * dof
+        # Desplazamientos
+        linea1 = "      "
+        for i, et in enumerate(etiquetas_disp):
+            linea1 += f"{et}{n+1} = {valores[base + i]:.5f}    "
+        # Rotaciones
+        linea2 = "      "
+        for i, et in enumerate(etiquetas_rot, start=3):
+            linea2 += f"{et}{n+1} = {valores[base + i]:.5f}    "
+
+        print(linea1)
+        print(linea2)
+    print()
+
+
+
 def print_elementos_formato_linea(matriz, nels):
     matriz = matriz.flatten()
 

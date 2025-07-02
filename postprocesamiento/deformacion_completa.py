@@ -1,9 +1,8 @@
-import math
-
 import numpy as np
 
 import discretizacion.datosGenerales as gd  # Usamos gd
-from extras.impresion_extra import print_seccion, print_nodos_formato
+from extras.impresion_extra import print_seccion, print_def_y_giro_extendido
+
 
 #Función para encontrar la matriz de deformación completa, añadiendo
 #ceros en los gdl.
@@ -26,4 +25,5 @@ def obtener_mat_def_completa():
     print_seccion("Las deformaciones (cm) son:")
     gd.u_completa = np.array(u_completa).reshape(-1, 1)
     result_cm = np.round(gd.u_completa * 100, 5)
-    print_nodos_formato(result_cm, gd.ndim)
+    #print_nodos_formato(result_cm, gd.ndim)
+    print_def_y_giro_extendido(result_cm, gd.restri)
