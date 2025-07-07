@@ -4,6 +4,7 @@ import discretizacion.datosGenerales as gd
 
 
 def form_kv():
+
     #Inicializa los valores de uso, el numero de ecuaciones y la banda
     n = int(gd.neq)
     bw = int(gd.nband)
@@ -25,11 +26,13 @@ def form_kv():
                         val_local = gd.km_locales[contador1][i][j]
                         icd = g[j] - g[i] + 1
                         #Si está en la banda superior, añadir, sino no.
-                        if (icd - 1) >= 0:
+                        if (icd-1 ) >= 0:
+
                             #Asigna la posición del elemento recuperado
                             ival = int(n * (icd - 1) + g[i])
                             #Escribe en kv el valor encontrado
                             kv[ival - 1] += val_local
+                            print(kv)
 
     # Ajuste final sólo para banda en 1D
     if  gd.ndim == 1 and kv[-1] == 0.0:

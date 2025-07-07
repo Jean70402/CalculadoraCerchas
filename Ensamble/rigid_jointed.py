@@ -149,7 +149,6 @@ def rigid_jointed():
             a7 = 4 * eiy / ell
             a8 = gj / ell
 
-            # --- asignaciones rígidas tal cual en MATLAB ---
             km_local[0, 0] = a1
             km_local[6, 6] = a1
             km_local[0, 6] = -a1
@@ -204,7 +203,7 @@ def rigid_jointed():
             gamrad = gd.props[fila[0] - 1][6] * math.pi / 180
             cg = math.cos(gamrad)
             sg = math.sin(gamrad)
-            den = ell * math.sqrt(x1 * x1 + z1 * z1)
+            den = ell * math.sqrt((x1 * x1) + (z1 * z1))
             r0 = np.zeros((3, 3))
             if den != 0:
                 r0[0, 0] = x1 / ell
@@ -220,7 +219,6 @@ def rigid_jointed():
                 r0[0, :] = [0, 1, 0]
                 r0[1, :] = [-cg, 0, sg]
                 r0[2, :] = [sg, 0, cg]
-
             for i in range(3):
                 for j in range(3):
                     x = r0[i, j]

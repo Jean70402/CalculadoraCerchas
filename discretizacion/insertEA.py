@@ -22,7 +22,7 @@ def insertarEiZ(prop):
     return eiz
 
 def insertarG(prop):
-    G = gd.props[prop - 1][6]
+    G = gd.props[prop - 1][5]
     return G
 
 def insertarA(prop):

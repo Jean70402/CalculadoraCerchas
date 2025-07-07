@@ -36,5 +36,5 @@ def subrutina_form_nf():
                 gd.neq += 1
                 gd.nf[i, j] = gd.neq
             # si está restringido, queda como 0
-    #print("nf:")
-    #print(gd.nf)
+    print("nf:")
+    print(gd.nf)
