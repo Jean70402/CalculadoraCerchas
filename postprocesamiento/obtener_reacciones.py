@@ -21,13 +21,13 @@ def form_kv_global():
         ni, nj = int(ni), int(nj)
         # vector de DOFs globales (1-based)
         g = (
-                [ni * gd.ndim + d + 1 for d in range(gd.ndim)] +
-                [nj * gd.ndim + d + 1 for d in range(gd.ndim)]
+                [ni * gd.restri + d + 1 for d in range(gd.restri)] +
+                [nj * gd.restri + d + 1 for d in range(gd.restri)]
         )
         km = gd.km_locales[idx]
 
-        for i in range(2 * gd.ndim):
-            for j in range(2 * gd.ndim):
+        for i in range(2 * gd.restri):
+            for j in range(2 * gd.restri):
                 val_local = km[i][j]
                 # desplazamiento en columnas +1
                 icd = g[j] - g[i] + 1

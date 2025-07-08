@@ -9,6 +9,7 @@ from postprocesamiento.calcular_axiales import calcular_axiales
 from postprocesamiento.calcular_def_unit import def_unit_y_esfuerzo
 from postprocesamiento.deformacion_completa import obtener_mat_def_completa
 from postprocesamiento.obtener_reacciones import obtenerReacciones
+from postprocesamiento.rigid_calcular_axiales import rigid_calcular_axiales
 from resolucion.banred import subrutina_banred
 import discretizacion.datosGenerales as gd
 
@@ -25,7 +26,8 @@ def main():
     calcular_loads()
     subrutina_banred()
     obtener_mat_def_completa()
-    calcular_axiales()
+    #calcular_axiales()
+    rigid_calcular_axiales()
     obtenerReacciones()
     def_unit_y_esfuerzo()
 

@@ -76,9 +76,9 @@ def calcular_axiales():
             conex = gd.g_g[idx]  # por ejemplo: array([0., 0., 3., 4.])
             conex = conex.astype(int)  # aseguramos enteros para índices
 
-            u_global = np.zeros((2 * gd.ndim, 1))  # inicializa vector columna con ceros
+            u_global = np.zeros((2 * gd.restri, 1))  # inicializa vector columna con ceros
 
-            for i in range(2 * gd.ndim):
+            for i in range(2 * gd.restri):
                 if conex[i] != 0:
                     u_global[i, 0] = gd.u_completa[conex[i] + 1, 0]  # asigna valor desde u_completa
             #print(u_global)

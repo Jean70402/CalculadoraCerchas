@@ -33,5 +33,5 @@ def calcular_loads():
     gd.gdl_completos  = gdl_completos
     gd.loads_reducido = loads_reducido
 
-    #print("Cargas reducidas:")
-    #print(gd.loads_reducido)
+    print("Cargas reducidas:")
+    print(gd.loads_reducido)

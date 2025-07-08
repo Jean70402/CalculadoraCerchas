@@ -32,10 +32,9 @@ def form_kv():
                             ival = int(n * (icd - 1) + g[i])
                             #Escribe en kv el valor encontrado
                             kv[ival - 1] += val_local
-                            print(kv)
 
     # Ajuste final sólo para banda en 1D
     if  gd.ndim == 1 and kv[-1] == 0.0:
         kv = kv[:-1]
     gd.kv = kv
-    #print(gd.kv)
+    print(gd.kv)
