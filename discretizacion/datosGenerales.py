@@ -32,3 +32,6 @@ restricciones=None
 mat_fuerzas=None
 kg_band=None
 bw_glob=None
+acc_int=None
+u_locales_completos=None
+T_locales=None

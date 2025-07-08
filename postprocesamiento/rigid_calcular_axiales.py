@@ -8,6 +8,7 @@ def rigid_calcular_axiales():
     axiales = []
     u_locales = []
     longitudes = []
+    u_locales_completos= []
 
     for idx, fila in enumerate(gd.conexion_elementos):
         nodo_i = fila[1]
@@ -29,7 +30,7 @@ def rigid_calcular_axiales():
                 gd.u_completa[conex[0], 0],
                 gd.u_completa[conex[1], 0]
             ]).reshape(2, 1)
-
+            u_locales_completos.append(u_global.copy())
             u_local = u_global
             u_locales.append(u_local.copy())
             axial = ea_L * (u_local[1] - u_local[0])
@@ -54,7 +55,7 @@ def rigid_calcular_axiales():
             for i in range(4):
                 if conex[i] != 0:
                     u_global[i, 0] = gd.u_completa[conex[i] + 1, 0]
-
+            u_locales_completos.append(u_global.copy())
             u_local = T @ u_global
             u_locales.append(u_local.copy())
             ea = insertarEa(fila[0])
@@ -85,7 +86,7 @@ def rigid_calcular_axiales():
             for i, dof in enumerate(dofs):
                 if gd.gdl_completos[dof] != 0:
                     u_global[i, 0] = gd.u_completa[dof, 0]
-
+            u_locales_completos.append(u_global.copy())
             u_local = T @ u_global
             u_locales.append(u_local.copy())
             ea = insertarEa(fila[0])
@@ -97,6 +98,7 @@ def rigid_calcular_axiales():
     gd.axiales = np.array(axiales)[:, np.newaxis]
     gd.u_locales = u_locales
     gd.longitudes = np.array(longitudes).reshape(-1, 1)
+    gd.u_locales_completos = u_locales_completos
 
     # Impresión
     print_seccion("Los axiales son (kN): ")

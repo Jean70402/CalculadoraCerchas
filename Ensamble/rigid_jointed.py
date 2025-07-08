@@ -10,7 +10,7 @@ def rigid_jointed():
     # define una lista de matriz vacia para elementos y para los km generados:
     elementos = []
     km_g = []
-
+    gd.T_locales = []
     # Iteración para recuperar valores de elementos y calcular las longitudes
     for fila in gd.conexion_elementos:
         nodo_i = fila[1]
@@ -45,7 +45,8 @@ def rigid_jointed():
             km_local[3, 3] = km_local[1, 1]
             km_local[1, 3] = 2 * ei / ell
             km_local[3, 1] = km_local[1, 3]
-
+            T_full = np.eye(4)
+            gd.T_locales.append(T_full)
             km_g.append(km_local)
             completo = np.append(fila, ell)
             elementos.append(completo)
@@ -114,6 +115,20 @@ def rigid_jointed():
 
             km_local[2, 5] = 2 * e3
             km_local[5, 2] = km_local[2, 5]
+
+            T_full = np.zeros((6, 6))
+            T_rot = np.array([[c, s], [-s, c]])
+
+            # Aplica la rotación a las submatrices (2x2) para cada par de DOFs
+            for i in range(2):
+                for j in range(2):
+                    T_full[i, j]       = T_rot[i, j]     # nodo_i, desplazamiento
+                    T_full[i+3, j+3]   = T_rot[i, j]     # nodo_j, desplazamiento
+
+            T_full[2, 2] = 1  # θz nodo_i
+            T_full[5, 5] = 1  # θz nodo_j
+
+            gd.T_locales.append(T_full.copy())
 
             km_g.append(km_local)
             completo = np.append(fila, ell)
@@ -239,7 +254,7 @@ def rigid_jointed():
                     for k in range(12):
                         suma += tt[i, k] * cc[k, j]
                     km_local[i, j] = suma
-
+            gd.T_locales.append(t.copy())
             km_g.append(km_local)
             completo = np.append(fila, ell)
             elementos.append(completo)

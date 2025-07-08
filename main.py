@@ -8,7 +8,7 @@ from discretizacion.num_to_g import subrutina_num_to_g_g
 from postprocesamiento.calcular_axiales import calcular_axiales
 from postprocesamiento.calcular_def_unit import def_unit_y_esfuerzo
 from postprocesamiento.deformacion_completa import obtener_mat_def_completa
-from postprocesamiento.obtener_reacciones import obtenerReacciones
+from postprocesamiento.obtener_reacciones import obtenerReacciones, obtenerAccionesInternas
 from postprocesamiento.rigid_calcular_axiales import rigid_calcular_axiales
 from resolucion.banred import subrutina_banred
 import discretizacion.datosGenerales as gd
@@ -30,6 +30,6 @@ def main():
     rigid_calcular_axiales()
     obtenerReacciones()
     def_unit_y_esfuerzo()
-
+    obtenerAccionesInternas()
 if __name__ == "__main__":
     main()
