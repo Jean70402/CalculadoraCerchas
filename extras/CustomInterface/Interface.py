@@ -8,6 +8,15 @@ class PorticoApp(ctk.CTk):
         self.title("Visualizador de Pórticos 1D/2D/3D")
         # Inicia maximizado (Windows)
         self.state('zoomed')
+        self.default_prop = {
+            "etype": 1,
+            "E":      400000,   # MPa
+            "A":      100000,   # cm2
+            "Iy":     30000,    # cm4
+            "Iz":     300000,   # cm4
+            "GJ":     300000,   # GJ
+            "Gamma":  0
+        }
 
         # — Consola inferior FIRST so that it always reserve the bottom —
         self.frame_bajo = ctk.CTkFrame(self, height=200, corner_radius=0)
@@ -106,9 +115,42 @@ class PorticoApp(ctk.CTk):
             fg_color="red",
             command=self._borrar
         ).pack(fill="x")
+        # — Botón para abrir ventana de propiedades —
+        ctk.CTkButton(
+            self.frame_izq,
+            text="Generar Propiedades",
+            command=self._open_properties_window
+        ).pack(fill="x", pady=(10,5))
+
+        # — Contenedor para scroll y asignación de propiedades —
+        bar_control_frame = ctk.CTkFrame(self.frame_izq)
+        bar_control_frame.pack(fill="both", expand=False, pady=(5,0))
+
+        # Scroll con checkboxes de barras
+        self.bar_prop_frame = ctk.CTkScrollableFrame(
+            bar_control_frame, width=350, height=250, corner_radius=0
+        )
+        self.bar_prop_frame.pack(side="left", fill="both", expand=True, padx=(0,5))
+        self.bar_checks = {}
+
+        # Controles de asignación de etype
+        etype_ctrl = ctk.CTkFrame(bar_control_frame)
+        etype_ctrl.pack(side="left", fill="y", padx=(5,0))
+
+        ctk.CTkLabel(etype_ctrl, text="etype:").pack(pady=(10,2))
+        self.etype_var = ctk.StringVar(value="1")
+        etype_entry = ctk.CTkEntry(etype_ctrl, textvariable=self.etype_var, width=60)
+        etype_entry.pack()
+
+        ctk.CTkButton(
+            etype_ctrl,
+            text="Asignar a seleccionadas",
+            command=self._asignar_etype
+        ).pack(pady=(10,5))
 
 
-    # — Gráfico 3D —
+
+        # — Gráfico 3D —
         self.fig = Figure(figsize=(5,5))
         self.ax  = self.fig.add_subplot(111, projection='3d')
         for ax_label in ("X","Y","Z"):
@@ -122,6 +164,23 @@ class PorticoApp(ctk.CTk):
 
         # Vista inicial
         self._on_dim_change("3D")
+
+    def _asignar_etype(self):
+        etype = self.etype_var.get()
+        if not etype.isdigit():
+            return self._write_console("Error: etype debe ser un número entero.")
+        etype = int(etype)
+
+        asignadas = []
+        for key, var in self.bar_checks.items():
+            if var.get():  # si está seleccionado
+                var.set(etype)
+                asignadas.append(key)
+
+        if asignadas:
+            self._write_console(f"etype={etype} asignado a: {', '.join(asignadas)}")
+        else:
+            self._write_console("No se seleccionaron barras.")
 
     def _write_console(self, txt):
         self.console.configure(state="normal")
@@ -241,10 +300,28 @@ class PorticoApp(ctk.CTk):
 
         # 4) Si todo está bien, crea y dibuja la barra
         self.barras.append((p1, p2))
+        # … después de self.barras.append((p1,p2)) y dibujarla …
+        self._write_console(f"Conectada barra {i1}↔{i2}")
+
+        # — Añadir un Checkbutton para esta barra en el scrollable frame —
+        key = f"{i1}-{i2}"
+        if key not in self.bar_checks:
+            # Usamos StringVar en vez de IntVar para aceptar cualquier valor
+            var = ctk.StringVar(value=str(self.default_prop["etype"]))
+            row_frame = ctk.CTkFrame(self.bar_prop_frame)
+            row_frame.pack(fill="x", pady=2, padx=5)
+
+            ctk.CTkCheckBox(row_frame, text=f"{key}", variable=var).pack(side="left")
+            ctk.CTkLabel(row_frame, text="etype:").pack(side="left", padx=5)
+            ctk.CTkEntry(row_frame, textvariable=var, width=40).pack(side="left")
+
+            self.bar_checks[key] = var
+
         xs, ys, zs = zip(p1, p2)
         self.ax.plot(xs, ys, zs, linewidth=2)
         self.canvas.draw()
         self._write_console(f"Conectada barra {i1}↔{i2}")
+
 
 
 
@@ -283,6 +360,49 @@ class PorticoApp(ctk.CTk):
 
         # Actualizar todos los menús de nodos (start, end, delete)
         self._update_node_menus()
+
+    def _open_properties_window(self):
+        """Abre una ventana para generar y guardar propiedades por etype."""
+        # Valores por defecto
+        defaults = self.default_prop
+
+        # Crear ventana modal
+        win = ctk.CTkToplevel(self)
+        win.title("Definir Propiedades de Sección")
+        win.geometry("400x350")
+        # Almacenará los valores ingresados
+        props_vars = {}
+        for field, val in defaults.items():
+            lbl = ctk.CTkLabel(win, text=f"{field}:")
+            lbl.pack(anchor="w", padx=10, pady=(10,0))
+            var = ctk.StringVar(value=str(val))
+            ent = ctk.CTkEntry(win, textvariable=var)
+            ent.pack(fill="x", padx=10, pady=(0,5))
+            props_vars[field] = var
+
+        def _save_props():
+            # Convierte tipos
+            data = {f: (int(v.get()) if f=="etype" else float(v.get()))
+                    for f,v in props_vars.items()}
+            # Guarda en JSON
+            import json, os
+            carpeta = os.path.dirname(__file__)
+            ruta = os.path.join(carpeta, "properties.json")
+            # Si ya existe, leemos y añadimos
+            if os.path.isfile(ruta):
+                with open(ruta, "r+") as f:
+                    allp = json.load(f)
+                    allp[str(data["etype"])] = data
+                    f.seek(0); json.dump(allp, f, indent=2); f.truncate()
+            else:
+                with open(ruta, "w") as f:
+                    json.dump({str(data["etype"]): data}, f, indent=2)
+            self._write_console(f"Propiedades etype={data['etype']} guardadas.")
+            win.destroy()
+
+        # Botón de guardar
+        ctk.CTkButton(win, text="Guardar", command=_save_props) \
+            .pack(pady=15)
 
 
 if __name__ == "__main__":
