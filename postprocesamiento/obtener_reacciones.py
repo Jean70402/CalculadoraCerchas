@@ -91,7 +91,7 @@ def obtenerAccionesInternas():
         k_loc = gd.km_locales[idx]      # (ndof×ndof)
         f_loc = k_loc @ eld             # (ndof×1)
 
-        # 3) Redondear y cero′ar casi ceros
+        # 3) Redondear y cero y casi ceros
         f_loc = np.where(np.abs(f_loc) < 1e-12, 0, np.round(f_loc, 7))
 
         # 4) Guardar en la matriz completa
