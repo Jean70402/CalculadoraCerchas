@@ -1,2 +1,4 @@
 numpy~=2.2.6
 pandas~=2.3.0
+customtkinter~=5.2.2
+matplotlib~=3.10.3
