@@ -26,4 +26,4 @@ def obtener_mat_def_completa():
     gd.u_completa = np.array(u_completa).reshape(-1, 1)
     result_cm = np.round(gd.u_completa * 100, 5)
     #print_nodos_formato(result_cm, gd.ndim)
-    print_def_y_giro_extendido(result_cm, gd.restri)
+    print_def_y_giro_extendido(result_cm, gd.restri,gd.restri)

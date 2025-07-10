@@ -14,8 +14,8 @@ from resolucion.banred import subrutina_banred
 import discretizacion.datosGenerales as gd
 
 def main():
-    #print("Escriba [0] para Cercha o [1] para pórtico:")
-    #gd.cer_por=input()
+    print("Escriba [0] para Cercha o [1] para pórtico:")
+    gd.cer_por=int(input())
 
     leer_datos_desde_excel()
     subrutina_form_nf()

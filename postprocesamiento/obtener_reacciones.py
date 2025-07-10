@@ -67,7 +67,7 @@ def obtenerReacciones():
 
     # 4) Imprimir reacciones
     print_seccion("Las reacciones son (kN):")
-    print_def_y_giro_reaccion(reacciones, gd.restri)
+    print_def_y_giro_reaccion(reacciones, gd.restri,gd.restri)
 
 def obtenerAccionesInternas():
 
@@ -77,7 +77,7 @@ def obtenerAccionesInternas():
     def_u = gd.mat_def_u.flatten()      # vector de deformaciones activas
 
     # Inicializo un array para guardar TODAS las acciones
-    acciones = np.zeros((ndof, nels))
+    matrizReacciones = np.zeros((ndof, nels))
 
     for idx in range(nels):
         # 1) Extraer eld (deformaciones del elemento) vía g_g
@@ -95,7 +95,7 @@ def obtenerAccionesInternas():
         f_loc = np.where(np.abs(f_loc) < 1e-12, 0, np.round(f_loc, 7))
 
         # 4) Guardar en la matriz completa
-        acciones[:, idx] = f_loc.flatten()
+        matrizReacciones[:, idx] = f_loc.flatten()
 
         # 5) Imprimir para este elemento
         print_seccion(f"Acciones internas — elemento {idx+1}:")

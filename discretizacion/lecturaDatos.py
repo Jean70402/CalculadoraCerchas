@@ -33,5 +33,4 @@ def leer_datos_desde_excel(ruta="datos/datos.xlsx"):
     #Len es la propiedad para llamar longitudes, devuelve enteros.
     gd.nn = len(nodos)
     gd.nels = len(elementos)
-    gd.nf = np.zeros((gd.nn, 6))
     gd.loads = loads
