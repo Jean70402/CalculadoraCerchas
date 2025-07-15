@@ -13,23 +13,29 @@ from postprocesamiento.rigid_calcular_axiales import rigid_calcular_axiales
 from resolucion.banred import subrutina_banred
 import discretizacion.datosGenerales as gd
 
+
 def main():
     print("Escriba [0] para Cercha o [1] para pórtico:")
-    gd.cer_por=int(input())
+    gd.cer_por = int(input())
 
     leer_datos_desde_excel()
     subrutina_form_nf()
     subrutina_num_to_g_g()
-    rigid_jointed()
-    #pin_jointed()
+    if gd.cer_por == 1:
+        rigid_jointed()
+    else:
+        pin_jointed()
     form_kv()
     calcular_loads()
     subrutina_banred()
     obtener_mat_def_completa()
-    #calcular_axiales()
-    rigid_calcular_axiales()
+    if gd.cer_por == 1:
+        rigid_calcular_axiales()
+    else:
+        calcular_axiales()
     obtenerReacciones()
     def_unit_y_esfuerzo()
     obtenerAccionesInternas()
+
 if __name__ == "__main__":
     main()

@@ -2,7 +2,6 @@ import numpy as np
 import discretizacion.datosGenerales as gd
 
 def calcular_loads():
-    # 0) Determinar qué DOF “muertos” hay (igual que en subrutina_form_nf)
     if   gd.ndim == 1 and gd.cer_por == 1:
         cols_a_borrar = [1, 3, 4, 5]
     elif gd.ndim == 2 and gd.cer_por == 1:
@@ -16,24 +15,21 @@ def calcular_loads():
     else:
         cols_a_borrar = []
 
-    # 1) Dimensión efectiva (1,2 ó 3 en 3D será 6)
     dim = int(gd.restri)
     nn  = int(gd.nn)
 
-    # 2) Preparo cargas_full con la dimensión “reducida”
     cargas_full = np.zeros((nn, dim))
 
-    # 3) Recorro el DataFrame original, quito columas muertas y lleno cargas_full
     for fila in gd.loads.values:
         row = fila.tolist()           # [nodo, Fx, Fy, Fz, Mx, My, Mz]
         for i in sorted(cols_a_borrar, reverse=True):
-            del row[i]                # elimino exactamente la columna i
-        idx = int(row[0]) - 1         # nodo → índice 0-based
+            del row[i]
+        idx = int(row[0]) - 1
         cargas_full[idx, :] = row[1:1+dim]
 
-    print("cargas_full:\n", cargas_full)
+    #print("cargas_full:\n", cargas_full)
 
-    # 4) Aplano a vector columna y sobreescribo gd.loads (igual que antes)
+    # 4) Aplano a vector columna y sobreescribo gd.loads
     loads_col = cargas_full.flatten()[:, np.newaxis]
     gd.loads  = loads_col
 
@@ -45,8 +41,8 @@ def calcular_loads():
     # 6) Extraer sólo los libres
     loads_reducido = loads_col[gdl_libres]
 
-    # 7) Guardar en globals (igual que antes)
+    # 7) Guardar en globals
     gd.gdl_completos  = gdl_completos
     gd.loads_reducido = loads_reducido
 
-    print("Cargas reducidas:\n", gd.loads_reducido)
+   # print("Cargas reducidas:\n", gd.loads_reducido)

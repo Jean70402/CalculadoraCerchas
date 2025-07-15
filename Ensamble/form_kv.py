@@ -37,4 +37,4 @@ def form_kv():
     if  gd.ndim == 1 and kv[-1] == 0.0:
         kv = kv[:-1]
     gd.kv = kv
-    print(gd.kv)
+    #print(gd.kv)

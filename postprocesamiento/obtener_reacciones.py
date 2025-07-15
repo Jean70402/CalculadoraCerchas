@@ -67,7 +67,7 @@ def obtenerReacciones():
 
     # 4) Imprimir reacciones
     print_seccion("Las reacciones son (kN):")
-    print_def_y_giro_reaccion(reacciones, gd.restri,gd.restri)
+    print_def_y_giro_reaccion(reacciones, gd.restri,gd.ndim)
 
 def obtenerAccionesInternas():
 

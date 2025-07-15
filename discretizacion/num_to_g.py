@@ -32,5 +32,5 @@ def subrutina_num_to_g_g():
             nband_new = (no_ceros.max() - no_ceros.min() + 1)
             if nband_new > gd.nband:
                 gd.nband = nband_new
-    print(gd.num)
-    print(gd.g_g)
+    #print(gd.num)
+    #print(gd.g_g)

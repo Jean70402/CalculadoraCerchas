@@ -16,22 +16,24 @@ def print_nodos_formato(matriz, ndim):
             linea += f"         {etiquetas[j]}{(i//ndim)+1} = {matriz[i+j]:.5f}           "
         print(linea)
     print()
-
 def print_def_y_giro_extendido(matriz, dof, ndim):
-    """
-    Imprime desplazamientos (dx, dy, dz) y rotaciones (θx, θy, θz)
-    sólo para los dof activos.
-    `dof` = gd.restri, `ndim` = gd.ndim.
-    """
+
     valores = matriz.flatten()
     n_nodos = len(valores) // dof
 
-    # cuántos disp vs rot
-    disp_count = min(ndim, dof)
-    rot_count  = dof - disp_count
-
-    labels_disp = ['dx', 'dy', 'dz'][:disp_count]
-    labels_rot  = ['θx', 'θy', 'θz'][:rot_count]
+    # Labels según ndim
+    if ndim == 1:
+        labels_disp = ['dy']
+        labels_rot  = ['θz']
+    elif ndim == 2:
+        labels_disp = ['dx', 'dy']
+        # solo hay rotación en z si dof == 3
+        labels_rot  = ['θz'] if dof == 3 else []
+    else:
+        labels_disp = ['dx', 'dy', 'dz']
+        # tantas rotaciones como dof extra sobre los 3 desplazamientos
+        n_rot = max(0, dof - 3)
+        labels_rot  = ['θx', 'θy', 'θz'][:n_rot]
 
     for n in range(n_nodos):
         base = n * dof
@@ -41,11 +43,11 @@ def print_def_y_giro_extendido(matriz, dof, ndim):
             linea_disp += f"{et}{n+1} = {valores[base + i]:.5f}    "
         print(linea_disp)
 
-        # línea de rotaciones (si hay)
-        if rot_count:
+        # línea de rotaciones, si las hay
+        if labels_rot:
             linea_rot = "      "
             for j, et in enumerate(labels_rot):
-                val = valores[base + disp_count + j]
+                val = valores[base + len(labels_disp) + j]
                 linea_rot += f"{et}{n+1} = {val:.5f}    "
             print(linea_rot)
 
@@ -53,18 +55,23 @@ def print_def_y_giro_extendido(matriz, dof, ndim):
 
 
 def print_def_y_giro_reaccion(matriz, dof, ndim):
-    """
-    Imprime reacciones de fuerza (Rx, Ry, Rz) y momento (Mx, My, Mz)
-    sólo para los dof activos.
-    """
+
     valores = matriz.flatten()
     n_nodos = len(valores) // dof
 
-    disp_count = min(ndim, dof)
-    rot_count  = dof - disp_count
-
-    labels_force = ['Rx', 'Ry', 'Rz'][:disp_count]
-    labels_moment= ['Mx', 'My', 'Mz'][:rot_count]
+    # Labels según ndim
+    if ndim == 1:
+        labels_force  = ['Rx']
+        labels_moment = ['Ry']
+    elif ndim == 2:
+        labels_force  = ['Rx', 'Ry']
+        # momento solo en z si dof == 3
+        labels_moment = ['Mz'] if dof == 3 else []
+    else:
+        labels_force  = ['Rx', 'Ry', 'Rz']
+        # tantos momentos como dof extra sobre los 3 fuerzas
+        n_mom = max(0, dof - 3)
+        labels_moment = ['Mx', 'My', 'Mz'][:n_mom]
 
     for n in range(n_nodos):
         base = n * dof
@@ -74,11 +81,11 @@ def print_def_y_giro_reaccion(matriz, dof, ndim):
             linea_f += f"{et}{n+1} = {valores[base + i]:.5f}    "
         print(linea_f)
 
-        # línea de momentos (si hay)
-        if rot_count:
+        # línea de momentos, si los hay
+        if labels_moment:
             linea_m = "      "
             for j, et in enumerate(labels_moment):
-                val = valores[base + disp_count + j]
+                val = valores[base + len(labels_force) + j]
                 linea_m += f"{et}{n+1} = {val:.5f}    "
             print(linea_m)
 

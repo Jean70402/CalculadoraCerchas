@@ -34,3 +34,28 @@ def leer_datos_desde_excel(ruta="datos/datos.xlsx"):
     gd.nn = len(nodos)
     gd.nels = len(elementos)
     gd.loads = loads
+
+    #Arreglo para corregir en pórticos:
+    gd.neq = 0
+    columnas_a_borrar = []
+    if gd.ndim == 1 and gd.cer_por == 1:
+        print("Pórtico de 1 dimension")
+        columnas_a_borrar = [1, 3, 4, 5]
+    elif gd.ndim == 2 and gd.cer_por == 1:
+        print("Pórtico de 2 dimension")
+        columnas_a_borrar = [3, 4, 5]
+
+    if gd.cer_por == 0:
+        columnas_a_borrar = [4, 5, 6]
+        if gd.ndim == 1:
+            print("Cercha de 1 dimension")
+            columnas_a_borrar += [2, 3]
+        elif gd.ndim == 2:
+            print("Cercha de 2 dimensiones")
+            columnas_a_borrar += [3]
+
+    for fila in gd.restricciones:
+        for i in sorted(columnas_a_borrar, reverse=True):
+            del fila[i]
+    #print(gd.restricciones)
+    gd.restri = len(gd.restricciones[0]) - 1
