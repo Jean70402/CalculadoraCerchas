@@ -5,7 +5,6 @@ def print_seccion(titulo):
     print(titulo.center(ancho))
     print("=" * ancho + "\n")
 
-import numpy as np
 
 def print_nodos_formato(matriz, ndim):
     etiquetas = ['x', 'y', 'z'][:ndim]
