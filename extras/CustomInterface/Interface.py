@@ -18,7 +18,7 @@ class PorticoApp(ctk.CTk):
         self._state_before_windows_set_titlebar_color = 'zoomed'
         self.default_prop = {
             "etype": 1,
-            "E": 400000,  # MPa
+            "E": 10,  # MPa
             "A": 100000,  # cm2
             "Iy": 30000,  # cm4
             "Iz": 300000,  # cm4
@@ -259,7 +259,7 @@ class PorticoApp(ctk.CTk):
 
         # 5) Empaqueta solo los grupos que toque
         mapping = {
-            "1D": (["X"], ["F_x"], ["M_x"]),
+            "1D": (["X"], ["F_y"], ["M_z"]),
             "2D": (["X", "Y"], ["F_x", "F_y"], ["M_z"]),
             "3D": (["X", "Y", "Z"], ["F_x", "F_y", "F_z"], ["M_x", "M_y", "M_z"]),
         }
