@@ -19,9 +19,9 @@ class PorticoApp(ctk.CTk):
         self.default_prop = {
             "etype": 1,
             "E": 10,  # MPa
-            "A": 100000,  # cm2
-            "Iy": 30000,  # cm4
-            "Iz": 300000,  # cm4
+            "A": 400000,  # cm2
+            "Iy": 100000,  # cm4
+            "Iz": 30000,  # cm4
             "GJ": 300000,  # GJ
             "Gamma": 0
         }
