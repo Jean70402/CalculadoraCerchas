@@ -38,16 +38,17 @@ def form_kv_global():
     #print(kv)
     return kv
 
+
 #Multiplicación de la matriz en formato de banda con elementos
 #Es más sencillo ya que no requiere la transpuesta
 def obtenerReacciones():
-    # 1) Matriz en banda
+    # Matriz en banda
     kv = form_kv_global()
     n = len(gd.u_completa)
     bw = len(gd.u_completa)
     rows = bw + 1
 
-    # 2) Multiplicación Kv × u
+    # Multiplicación Kv × u
     u = gd.u_completa
     y = np.zeros_like(u)
 
@@ -67,36 +68,37 @@ def obtenerReacciones():
 
     # 4) Imprimir reacciones
     print_seccion("Las reacciones son (kN):")
-    print_def_y_giro_reaccion(reacciones, gd.restri,gd.ndim)
+    print_def_y_giro_reaccion(reacciones, gd.restri, gd.ndim)
+
 
 def obtenerAccionesInternas():
-
-    r     = gd.restri                  # DOF por nodo (2D→3, 3D→6)
-    ndof  = 2 * r                       # DOF totales por elemento
-    nels  = gd.nels                     # número de elementos
-    def_u = gd.mat_def_u.flatten()      # vector de deformaciones activas
+    r = gd.restri  # DOF por nodo (2D→3, 3D→6)
+    ndof = 2 * r  # DOF totales por elemento
+    nels = gd.nels  # número de elementos
+    def_u = gd.mat_def_u.flatten()  # vector de deformaciones activas
 
     # Inicializo un array para guardar TODAS las acciones
     matrizReacciones = np.zeros((ndof, nels))
 
     for idx in range(nels):
-        # 1) Extraer eld (deformaciones del elemento) vía g_g
+        # Extraer eld (deformaciones del elemento) vía g_g
         eld = np.zeros((ndof, 1))
-        g   = gd.g_g[idx].astype(int)   # g_g fila (1-based para def_u)
+        g = gd.g_g[idx].astype(int)  # g_g fila (1-based para def_u)
         for i in range(ndof):
             if g[i] != 0:
                 eld[i, 0] = def_u[g[i] - 1]
 
-        # 2) Calcular acciones locales
-        k_loc = gd.km_locales[idx]      # (ndof×ndof)
-        f_loc = k_loc @ eld             # (ndof×1)
+        #  Calcular acciones locales, se utiliza multiplicación de k locales * u locales.
+        # Se obtienen las f locales
+        k_loc = gd.km_locales[idx]  # (ndof×ndof)
+        f_loc = k_loc @ eld  # (ndof×1)
 
-        # 3) Redondear y cero y casi ceros
+        # Redondear y cero y casi ceros
         f_loc = np.where(np.abs(f_loc) < 1e-12, 0, np.round(f_loc, 7))
 
-        # 4) Guardar en la matriz completa
+        # Guardar en la matriz completa
         matrizReacciones[:, idx] = f_loc.flatten()
 
-        # 5) Imprimir para este elemento
-        print_seccion(f"Acciones internas — elemento {idx+1}:")
+        # Imprimir para este elemento
+        print_seccion(f"Acciones internas — elemento {idx + 1}:")
         print(f_loc.flatten(), "\n")

@@ -9,7 +9,8 @@ def rigid_calcular_axiales():
     u_locales = []
     longitudes = []
     u_locales_completos= []
-
+    #Se utiliza otra subrutina para los axiales debido a que el vector de transformación
+    #En 2 y 3 dimensiones es diferente, del resto es igual para cerchas
     for idx, fila in enumerate(gd.conexion_elementos):
         nodo_i = fila[1]
         nodo_j = fila[2]

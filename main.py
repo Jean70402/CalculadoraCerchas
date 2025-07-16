@@ -15,6 +15,7 @@ import discretizacion.datosGenerales as gd
 
 
 def main():
+    #Entrada para calcular cerchas o pórticos
     print("Escriba [0] para Cercha o [1] para pórtico:")
     gd.cer_por = int(input())
 

@@ -35,7 +35,8 @@ def leer_datos_desde_excel(ruta="datos/datos.xlsx"):
     gd.nels = len(elementos)
     gd.loads = loads
 
-    #Arreglo para corregir en pórticos:
+    #Arreglo para definir cuales columnas deben eliminarse de los datos.
+
     gd.neq = 0
     columnas_a_borrar = []
     if gd.ndim == 1 and gd.cer_por == 1:
@@ -58,4 +59,6 @@ def leer_datos_desde_excel(ruta="datos/datos.xlsx"):
         for i in sorted(columnas_a_borrar, reverse=True):
             del fila[i]
     #print(gd.restricciones)
+    #Esto define el número de restricciones que se impone,
+    # según dimensión, una vez se han borrado columnas
     gd.restri = len(gd.restricciones[0]) - 1
