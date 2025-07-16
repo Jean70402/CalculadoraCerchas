@@ -19,7 +19,7 @@ def open_restrictions_window(app):
             chk = ctk.CTkCheckBox(row, text=comp, variable=var, onvalue=1, offvalue=0)
             # oculta según dimensión
             dim = app.dim_var.get()
-            if (dim=="1D" and comp not in ("vx","θz")) or \
+            if (dim=="1D" and comp not in ("vy","θz")) or \
                     (dim=="2D" and comp not in ("vx","vy","θz")):
                 # no pack → queda con valor 1 en app.restrictions
                 pass
